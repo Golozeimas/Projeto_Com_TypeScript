@@ -1,30 +1,41 @@
 import {useState} from 'react'
 
-
 function Main(){
-  const [user, setUser] = useState("Olá, visitante!")
 
-  function handleLogin(){
-    setUser("Olá, estudante!")
+  const [tasks,setTasks] = useState(['Estudar React','Estudar TypeScript','Estudar Node.js'])
+  const [newTask, setNewTask] = useState('')
+  
+
+  function handleAddTask(e: React.FormEvent<HTMLFormElement>){
+    e.preventDefault()
+    if(newTask.trim() === ''){
+      alert('Digite uma tarefa válida')
+      return
+    }
+    setTasks([...tasks, newTask])
+    setNewTask('')
   }
 
-  function handleLogout(){
-    setUser("Você saiu da sua conta!")
-  }
   return(
     <div>
-      <h2>
-      {user}
-      </h2>
+      <h1>Lista de Tarefas</h1>
+
+      <form action="submit" onSubmit={handleAddTask}>
+      <input 
+      type="text" 
+      placeholder='Digite uma tarefa' 
+      value={newTask}
+      onChange={(e) => setNewTask(e.target.value)}
+      />
       
-      <button onClick={handleLogin}>
-        Clique aqui para logar!
-      </button>
-    
-      <button onClick={handleLogout}>
-        Clique aqui para sair!
-      </button>
+      <button type='submit'>Adicionar</button>
       
+      </form>
+      {tasks.map((task, index) =>(
+        <div key={index}>
+          <p>{index + 1}: {task}</p>
+        </div>
+      ))}
     </div>
   )
 }
